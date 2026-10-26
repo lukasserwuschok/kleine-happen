@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Smiling bowl with a spoon. Kept inside the central safe zone of the adaptive icon. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="456" height="456" viewBox="0 0 456 456">
+  <g transform="translate(108 108) scale(3.75)">
+    <path d="M10 34h44a22 22 0 0 1-44 0Z" fill="#FF8A65"/>
+    <rect x="8" y="31" width="48" height="5" rx="2.5" fill="#FF8A65"/>
+    <circle cx="24" cy="44" r="3" fill="#2A2850"/>
+    <circle cx="40" cy="44" r="3" fill="#2A2850"/>
+    <path d="M27 50 Q32 55 37 50" stroke="#2A2850" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <circle cx="18" cy="48" r="3" fill="#E7539A" fill-opacity="0.45"/>
+    <circle cx="46" cy="48" r="3" fill="#E7539A" fill-opacity="0.45"/>
+    <rect x="41" y="4" width="5" height="24" rx="2.5" transform="rotate(25 43.5 16)" fill="#3E8EF7"/>
+    <ellipse cx="49" cy="7" rx="6.5" ry="4.8" transform="rotate(25 49 7)" fill="#3E8EF7"/>
+    <circle cx="20" cy="22" r="4" fill="#22B894"/>
+    <circle cx="29" cy="19" r="4.5" fill="#E7539A"/>
+    <circle cx="37" cy="24" r="3.5" fill="#8462EE"/>
+  </g>
+</svg>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    SafeAreaEdges="Container": since .NET 10 / Android 15+ apps draw edge to edge.
+    This keeps the page clear of the status bar and the gesture bar, while the page
+    background still fills the space behind them.
+-->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KleineHappen.MainPage"
+             SafeAreaEdges="Container"
+             BackgroundColor="{AppThemeBinding Light=#F4F8FF, Dark=#161731}">
+
+    <!-- The whole interface lives in Resources/Raw/wwwroot/index.html. -->
+    <HybridWebView x:Name="WebView"
+                   HybridRoot="wwwroot"
+                   DefaultFile="index.html" />
+
+</ContentPage>

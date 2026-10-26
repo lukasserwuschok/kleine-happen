@@ -4,24 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#F4F8FF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#161731" media="(prefers-color-scheme: dark)">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Kleine Happen">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon-192.png">
-
 <title>Kleine Happen</title>
 <style>
-/* Fonts ship inside the app (SIL Open Font License, see *-OFL.txt). No request leaves the phone. */
-@font-face{font-family:"Outfit";src:url("Outfit-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
-@font-face{font-family:"Outfit";src:url("Outfit-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
-@font-face{font-family:"Poppins";src:url("Poppins-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
-@font-face{font-family:"Poppins";src:url("Poppins-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
-@font-face{font-family:"Poppins";src:url("Poppins-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+/* Fonts ship inside the app (SIL Open Font License, see fonts/). No request leaves the phone. */
+@font-face{font-family:"Outfit";src:url("fonts/Outfit-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Outfit";src:url("fonts/Outfit-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
 </style>
 <style>
 /* Layout: phone-first app, five views behind a bottom tab bar, one 580px column; sticker-style cards on a dotted sky ground */
@@ -154,6 +144,37 @@ header.top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .tag{display:inline-block;font-size:.66rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:7px;background:var(--sky-soft);color:var(--ink);margin:2px 3px 0 0}
 .tag.iron{background:var(--peach-soft)}
 .tag.own{background:var(--grape-soft)}
+.tag.frz{background:var(--mint-soft)}
+/* 1.3: reactions, allergen plan, photos, album, family mode, age tips */
+.subtabs{overflow-x:auto;scrollbar-width:none}.subtabs::-webkit-scrollbar{display:none}
+.subtabs button{flex:1 0 auto;white-space:nowrap;padding:9px 9px}
+.pill.due{background:var(--peach-soft);color:var(--ink)}
+.entry .note.rxn{background:var(--berry-soft);font-weight:800}
+.hint.warn{background:var(--berry-soft);font-weight:700}
+.chip.rxc[aria-pressed=true]{background:var(--berry-soft);border-color:var(--berry)}
+.tag.new{background:var(--sun);color:#2A2850}
+.due{border-color:var(--peach);background:var(--peach-soft)}
+.due .chip{background:var(--surface)}
+.agetip{border-color:var(--mint);background:var(--mint-soft);box-shadow:none}
+.agetip h3{margin:0}
+.patl{font-size:.9rem;font-weight:700;overflow-wrap:anywhere}
+.patl.strong{background:var(--berry-soft);border-radius:12px;padding:6px 10px}
+.check{display:flex;align-items:center;gap:8px;font-weight:800;font-size:.95rem}
+.check input{width:22px;height:22px;accent-color:var(--grape);flex:none}
+.ph{display:block;border:0;padding:0;background:var(--bg);border-radius:16px;overflow:hidden;position:relative;color:inherit;text-align:left}
+.ph img{display:block;width:100%;height:100%;object-fit:cover}
+.ph.missing img{visibility:hidden}
+.entry .ph.thumb{grid-column:2/4;width:96px;height:96px;border-radius:14px}
+.ph.thumb.big{width:110px;height:110px}
+.ph.full{border-radius:20px;max-height:62vh}
+.ph.full img{height:auto;max-height:62vh;object-fit:contain;background:var(--bg)}
+.album{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.album .ph{aspect-ratio:1/1;box-shadow:0 4px 0 var(--line);border:2px solid var(--line)}
+.album .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 9px 7px;background:linear-gradient(transparent,rgba(20,20,45,.72));color:#fff;font-size:.8rem;line-height:1.25}
+.album .cap b{display:block;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.album .cap small{opacity:.9}
+.fam{background:var(--bg)}
+
 .tag.warn{background:var(--berry-soft)}
 
 /* plan */
@@ -319,15 +340,15 @@ nav.tabs button[aria-current=page] svg{stroke:#2A2850}
 <div id="sheetwrap" hidden><div class="backdrop" data-act="closeSheet"></div><div class="sheet" role="dialog" aria-modal="true"><div class="in" id="sheet"></div></div></div>
 <div class="toast" id="toast" hidden></div>
 
-<script src="web-bridge.js"></script>
-<script src="lang-de.js"></script>
-<script src="lang-en.js"></script>
-<script src="lang-fr.js"></script>
-<script src="lang-es.js"></script>
-<script src="lang-it.js"></script>
-<script src="lang-nl.js"></script>
-<script src="lang-pl.js"></script>
-<script src="lang-tr.js"></script>
+<script src="_framework/hybridwebview.js"></script>
+<script src="lang/de.js"></script>
+<script src="lang/en.js"></script>
+<script src="lang/fr.js"></script>
+<script src="lang/es.js"></script>
+<script src="lang/it.js"></script>
+<script src="lang/nl.js"></script>
+<script src="lang/pl.js"></script>
+<script src="lang/tr.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

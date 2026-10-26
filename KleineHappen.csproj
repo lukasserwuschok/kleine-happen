@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- .NET 10 targets Android 16 (API 36), which Google Play requires for new apps and updates from 31 Aug 2026. -->
+		<TargetFrameworks>net10.0-android</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>KleineHappen</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<!-- The launcher name comes from Platforms/Android/Resources/values-*/strings.xml (one per language). -->
+		<!-- Final once uploaded to Google Play: it can never be changed afterwards. -->
+		<ApplicationId>de.serwuschok.kleinehappen</ApplicationId>
+		<!-- Shown in the store. -->
+		<ApplicationDisplayVersion>1.3.0</ApplicationDisplayVersion>
+		<!-- Must go up by at least 1 with every upload to Google Play. -->
+		<ApplicationVersion>6</ApplicationVersion>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
+
+		<!-- HybridWebView deserialises the JS call arguments by reflection; keep that working in trimmed Release builds. -->
+		<JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+	</PropertyGroup>
+
+	<!--
+		Release builds produce both:
+		  *.aab  -> upload to Google Play
+		  *.apk  -> install directly for testing
+		Signing uses your upload key. Pass the passwords on the command line or as environment
+		variables, never commit them (see PLAY-STORE.md, step 2).
+	-->
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<AndroidPackageFormats>aab;apk</AndroidPackageFormats>
+		<AndroidKeyStore>true</AndroidKeyStore>
+		<AndroidSigningKeyStore Condition="'$(AndroidSigningKeyStore)' == ''">$(MSBuildProjectDirectory)\..\keys\kleinehappen-upload.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias Condition="'$(AndroidSigningKeyAlias)' == ''">upload</AndroidSigningKeyAlias>
+		<AndroidSigningStorePass Condition="'$(AndroidSigningStorePass)' == ''">env:KH_KEYSTORE_PASS</AndroidSigningStorePass>
+		<AndroidSigningKeyPass Condition="'$(AndroidSigningKeyPass)' == ''">env:KH_KEYSTORE_PASS</AndroidSigningKeyPass>
+		<!-- Smaller download; the app has no reflection-heavy libraries. -->
+		<AndroidLinkTool>r8</AndroidLinkTool>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#FFC93C" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#F4F8FF" BaseSize="160,160" />
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+	</ItemGroup>
+
+	<!-- The bridge methods are only called from JavaScript; stop the trimmer from removing them. -->
+	<ItemGroup>
+		<TrimmerRootAssembly Include="KleineHappen" RootMode="All" />
+	</ItemGroup>
+
+</Project>
